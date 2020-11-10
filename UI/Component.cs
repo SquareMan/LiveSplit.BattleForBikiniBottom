@@ -12,15 +12,13 @@ namespace LiveSplit.BattleForBikiniBottom.UI
     {
         public override string ComponentName => Factory.AutosplitterName;
         
-        private LiveSplitState _state;
         private Autosplitter _autosplitter;
-        private SettingsControl _settingsControl;
+        private ComponentSettingsControl _componentSettingsControl;
 
         public Component(LiveSplitState state)
         {
-            _state = state;
             _autosplitter = new Autosplitter(state);
-            _settingsControl = new SettingsControl();
+            _componentSettingsControl = new ComponentSettingsControl(state);
             
             // TODO: This is a workaround for settings form not adding controls if the autosplits are incorrectly deemed to not have changed
             // (Such as when the component is deactivated/reactivated, the static list stays the same, but the form is new. 
@@ -29,7 +27,7 @@ namespace LiveSplit.BattleForBikiniBottom.UI
         
         public override Control GetSettingsControl(LayoutMode mode)
         {
-            return _settingsControl;
+            return _componentSettingsControl;
         }
 
         public override XmlNode GetSettings(XmlDocument document)
@@ -52,7 +50,7 @@ namespace LiveSplit.BattleForBikiniBottom.UI
 
         public override void Dispose()
         {
-            _settingsControl.Dispose();
+            _componentSettingsControl.Dispose();
         }
     }
 }
