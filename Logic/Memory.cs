@@ -29,8 +29,8 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
             [In, Out] WorkingSetExInformation[] pv, int cb);
         
         public static StringWatcher LevelName { get; private set; }
-        public static MemoryWatcher<bool> Loading { get; private set; }
-        public static MemoryWatcher<byte> SpatCount { get; private set; }
+        public static MemoryWatcher<bool> IsLoading { get; private set; }
+        public static MemoryWatcher<byte> SpatulaCount { get; private set; }
         public static MemoryWatcher<byte> FuseCount { get; private set; }
         public static MemoryWatcher<byte> GameStartNoAutosave { get; private set; }
         public static MemoryWatcher<byte> GameStartWithAutosave { get; private set; }
@@ -50,8 +50,8 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
             if (!IsHooked)
                 return;
 
-            Loading.Update(_dolphinProcess);
-            SpatCount.Update(_dolphinProcess);
+            IsLoading.Update(_dolphinProcess);
+            SpatulaCount.Update(_dolphinProcess);
             LevelName.Update(_dolphinProcess);
             FuseCount.Update(_dolphinProcess);
             GameStartNoAutosave.Update(_dolphinProcess);
@@ -113,8 +113,8 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
             if (emulatedMemoryBaseAddress != IntPtr.Zero)
             {
                 IsHooked = true;
-                Loading = new MemoryWatcher<bool>(emulatedMemoryBaseAddress + 0x3CB7B3);
-                SpatCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3C205F);
+                IsLoading = new MemoryWatcher<bool>(emulatedMemoryBaseAddress + 0x3CB7B3);
+                SpatulaCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3C205F);
                 LevelName = new StringWatcher(emulatedMemoryBaseAddress + 0x28060B, ReadStringType.ASCII, 4);
                 FuseCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x595B15);
                 GameStartNoAutosave = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x541E9C);
