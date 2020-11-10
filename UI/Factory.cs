@@ -7,11 +7,11 @@ namespace LiveSplit.BattleForBikiniBottom.UI
 {
     public class Factory : IComponentFactory
     {
-        public const string AutosplitterName = "Battle for Bikini Bottom: Rehydrated Autosplitter";
+        public const string AutosplitterName = "Battle for Bikini Bottom Autosplitter";
         public string UpdateName => ComponentName;
         public string XMLURL => UpdateURL + "Components/Updates.xml";
         public string UpdateURL =>
-            "https://raw.githubusercontent.com/SquareMan/LiveSplit.BfBBRehydrated/master";
+            "https://raw.githubusercontent.com/SquareMan/LiveSplit.BattleForBikiniBottom/master";
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
         public IComponent Create(LiveSplitState state)
         {
@@ -19,7 +19,7 @@ namespace LiveSplit.BattleForBikiniBottom.UI
         }
 
         public string ComponentName => $"{AutosplitterName} v{Version.ToString(3)}";
-        public string Description => "";
+        public string Description => AutosplitterName;
         public ComponentCategory Category => ComponentCategory.Control;
     }
 }

@@ -48,7 +48,7 @@ namespace LiveSplit.BattleForBikiniBottom.UI
             Memory.Update();
         }
 
-        public override string ComponentName { get; }
+        public override string ComponentName => Factory.AutosplitterName;
 
         public override void Dispose()
         {
