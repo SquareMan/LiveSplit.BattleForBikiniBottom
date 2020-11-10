@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using LiveSplit.BattleForBikiniBottom.UI;
 using LiveSplit.ComponentUtil;
 
 namespace LiveSplit.BattleForBikiniBottom.Logic
