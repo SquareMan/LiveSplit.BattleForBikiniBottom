@@ -45,7 +45,7 @@ namespace LiveSplit.BattleForBikiniBottom.UI
 
         public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
         {
-            Memory.HookProcess();
+            Memory.Update();
         }
 
         public override string ComponentName { get; }

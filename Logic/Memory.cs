@@ -28,16 +28,40 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
         private static extern bool K32QueryWorkingSetEx(IntPtr hProcess,
             [In, Out] WorkingSetExInformation[] pv, int cb);
         
+        public static StringWatcher LevelNameWatcher { get; private set; }
+        public static MemoryWatcher Loading { get; private set; }
+        public static MemoryWatcher SpatCountWatcher { get; private set; }
+        public static MemoryWatcher FuseCountWatcher { get; private set; }
+        public static MemoryWatcher GameStartNoAutosave { get; private set; }
+        public static MemoryWatcher GameStartWithAutosave { get; private set; }
+        
         public static bool IsHooked { get; private set; }
 
         private static Process _dolphinProcess;
         private const double HookAttemptDelay = 1.0;
         private static DateTime _nextHookAttemptTime;
+
+        /// <summary>
+        /// Updates all MemoryWatchers
+        /// </summary>
+        public static void Update()
+        {
+            HookProcess();
+            if (!IsHooked)
+                return;
+
+            Loading.Update(_dolphinProcess);
+            SpatCountWatcher.Update(_dolphinProcess);
+            LevelNameWatcher.Update(_dolphinProcess);
+            FuseCountWatcher.Update(_dolphinProcess);
+            GameStartNoAutosave.Update(_dolphinProcess);
+            GameStartWithAutosave.Update(_dolphinProcess);
+        }
         
         /// <summary>
         /// Attempt to hook the game process (if not already hooked)
         /// </summary>
-        public static void HookProcess()
+        private static void HookProcess()
         {
             //Unhook if the process exits
             if (_dolphinProcess != null && _dolphinProcess.HasExited)
@@ -81,10 +105,19 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
                     if ((wsi[0].VirtualAttributes.Flags & 0b1) == 1)
                     {
                         emulatedMemoryBaseAddress = page.BaseAddress;
-                        IsHooked = true;
                         break;
                     }
                 }
+            }
+
+            if (emulatedMemoryBaseAddress != IntPtr.Zero)
+            {
+                IsHooked = true;
+                SpatCountWatcher = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3C205F);
+                LevelNameWatcher = new StringWatcher(emulatedMemoryBaseAddress + 0x28060B, ReadStringType.ASCII, 4);
+                FuseCountWatcher = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x595B15);
+                GameStartNoAutosave = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x541E9C);
+                GameStartWithAutosave = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x55D6C0);
             }
         }
     }
