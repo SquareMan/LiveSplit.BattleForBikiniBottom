@@ -32,8 +32,8 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
         public static MemoryWatcher<bool> Loading { get; private set; }
         public static MemoryWatcher<byte> SpatCount { get; private set; }
         public static MemoryWatcher<byte> FuseCount { get; private set; }
-        public static MemoryWatcher<bool> GameStartNoAutosave { get; private set; }
-        public static MemoryWatcher<bool> GameStartWithAutosave { get; private set; }
+        public static MemoryWatcher<byte> GameStartNoAutosave { get; private set; }
+        public static MemoryWatcher<byte> GameStartWithAutosave { get; private set; }
         
         public static bool IsHooked { get; private set; }
 
@@ -117,8 +117,8 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
                 SpatCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3C205F);
                 LevelName = new StringWatcher(emulatedMemoryBaseAddress + 0x28060B, ReadStringType.ASCII, 4);
                 FuseCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x595B15);
-                GameStartNoAutosave = new MemoryWatcher<bool>(emulatedMemoryBaseAddress + 0x541E9C);
-                GameStartWithAutosave = new MemoryWatcher<bool>(emulatedMemoryBaseAddress + 0x55D6C0);
+                GameStartNoAutosave = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x541E9C);
+                GameStartWithAutosave = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x55D6C0);
             }
         }
     }
