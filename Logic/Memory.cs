@@ -28,10 +28,10 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
         private static extern bool K32QueryWorkingSetEx(IntPtr hProcess,
             [In, Out] WorkingSetExInformation[] pv, int cb);
         
-        public static StringWatcher LevelNameWatcher { get; private set; }
+        public static StringWatcher LevelName { get; private set; }
         public static MemoryWatcher Loading { get; private set; }
-        public static MemoryWatcher SpatCountWatcher { get; private set; }
-        public static MemoryWatcher FuseCountWatcher { get; private set; }
+        public static MemoryWatcher SpatCount { get; private set; }
+        public static MemoryWatcher FuseCount { get; private set; }
         public static MemoryWatcher GameStartNoAutosave { get; private set; }
         public static MemoryWatcher GameStartWithAutosave { get; private set; }
         
@@ -51,9 +51,9 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
                 return;
 
             Loading.Update(_dolphinProcess);
-            SpatCountWatcher.Update(_dolphinProcess);
-            LevelNameWatcher.Update(_dolphinProcess);
-            FuseCountWatcher.Update(_dolphinProcess);
+            SpatCount.Update(_dolphinProcess);
+            LevelName.Update(_dolphinProcess);
+            FuseCount.Update(_dolphinProcess);
             GameStartNoAutosave.Update(_dolphinProcess);
             GameStartWithAutosave.Update(_dolphinProcess);
         }
@@ -113,11 +113,12 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
             if (emulatedMemoryBaseAddress != IntPtr.Zero)
             {
                 IsHooked = true;
-                SpatCountWatcher = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3C205F);
-                LevelNameWatcher = new StringWatcher(emulatedMemoryBaseAddress + 0x28060B, ReadStringType.ASCII, 4);
-                FuseCountWatcher = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x595B15);
-                GameStartNoAutosave = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x541E9C);
-                GameStartWithAutosave = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x55D6C0);
+                Loading = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3CB7B3);
+                SpatCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3C205F);
+                LevelName = new StringWatcher(emulatedMemoryBaseAddress + 0x28060B, ReadStringType.ASCII, 4);
+                FuseCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x595B15);
+                GameStartNoAutosave = new MemoryWatcher<bool>(emulatedMemoryBaseAddress + 0x541E9C);
+                GameStartWithAutosave = new MemoryWatcher<bool>(emulatedMemoryBaseAddress + 0x55D6C0);
             }
         }
     }
