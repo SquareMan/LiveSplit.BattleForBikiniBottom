@@ -39,6 +39,10 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
                     else if (ShouldReset())
                     {
                         _model.Reset();
+                        if (ShouldStart())
+                        {
+                            _model.Start();
+                        }
                     }
                     break;
             }
