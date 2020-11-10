@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
 using LiveSplit.BattleForBikiniBottom.Logic;
-using LiveSplit.ComponentUtil;
 using LiveSplit.Model;
-using LiveSplit.Options;
 using LiveSplit.UI;
 using LiveSplit.UI.Components;
 
@@ -16,17 +11,22 @@ namespace LiveSplit.BattleForBikiniBottom.UI
 {
     public class Component : LogicComponent
     {
+        public override string ComponentName => Factory.AutosplitterName;
+        
         private LiveSplitState _state;
+        private Autosplitter _autosplitter;
         private SettingsControl _settingsControl;
-        private Process _dolphinProcess;
 
         public Component(LiveSplitState state)
         {
             _state = state;
+            _autosplitter = new Autosplitter(state);
             _settingsControl = new SettingsControl();
+            
+            // TODO: This is a workaround for settings form not adding controls if the autosplits are incorrectly deemed to not have changed
+            // (Such as when the component is deactivated/reactivated, the static list stays the same, but the form is new. 
+            AutosplitterSettings.Autosplits = new List<Split>();
         }
-        
-        
         
         public override Control GetSettingsControl(LayoutMode mode)
         {
@@ -46,9 +46,10 @@ namespace LiveSplit.BattleForBikiniBottom.UI
         public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
         {
             Memory.Update();
+            _autosplitter.Update();
         }
 
-        public override string ComponentName => Factory.AutosplitterName;
+        
 
         public override void Dispose()
         {
