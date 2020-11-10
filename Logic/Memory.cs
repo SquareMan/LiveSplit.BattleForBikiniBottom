@@ -99,7 +99,7 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
             {
                 WorkingSetExInformation[] wsi = {new WorkingSetExInformation{VirtualAddress = page.BaseAddress}};
                 if(K32QueryWorkingSetEx(_dolphinProcess.Handle, wsi,
-                    (int) Marshal.SizeOf(typeof(WorkingSetExInformation))));
+                    Marshal.SizeOf(typeof(WorkingSetExInformation))))
                 {
                     if ((wsi[0].VirtualAttributes.Flags & 0b1) == 1)
                     {
