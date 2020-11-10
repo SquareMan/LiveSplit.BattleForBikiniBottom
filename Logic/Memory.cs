@@ -29,11 +29,11 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
             [In, Out] WorkingSetExInformation[] pv, int cb);
         
         public static StringWatcher LevelName { get; private set; }
-        public static MemoryWatcher Loading { get; private set; }
-        public static MemoryWatcher SpatCount { get; private set; }
-        public static MemoryWatcher FuseCount { get; private set; }
-        public static MemoryWatcher GameStartNoAutosave { get; private set; }
-        public static MemoryWatcher GameStartWithAutosave { get; private set; }
+        public static MemoryWatcher<bool> Loading { get; private set; }
+        public static MemoryWatcher<byte> SpatCount { get; private set; }
+        public static MemoryWatcher<byte> FuseCount { get; private set; }
+        public static MemoryWatcher<bool> GameStartNoAutosave { get; private set; }
+        public static MemoryWatcher<bool> GameStartWithAutosave { get; private set; }
         
         public static bool IsHooked { get; private set; }
 
@@ -113,7 +113,7 @@ namespace LiveSplit.BattleForBikiniBottom.Logic
             if (emulatedMemoryBaseAddress != IntPtr.Zero)
             {
                 IsHooked = true;
-                Loading = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3CB7B3);
+                Loading = new MemoryWatcher<bool>(emulatedMemoryBaseAddress + 0x3CB7B3);
                 SpatCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x3C205F);
                 LevelName = new StringWatcher(emulatedMemoryBaseAddress + 0x28060B, ReadStringType.ASCII, 4);
                 FuseCount = new MemoryWatcher<byte>(emulatedMemoryBaseAddress + 0x595B15);
