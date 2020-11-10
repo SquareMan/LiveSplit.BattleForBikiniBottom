@@ -32,12 +32,12 @@ namespace LiveSplit.BattleForBikiniBottom.UI
 
         public override XmlNode GetSettings(XmlDocument document)
         {
-            return document.CreateElement("Settings");
+            return _componentSettingsControl.GetSettings(document);
         }
 
         public override void SetSettings(XmlNode settings)
         {
-            
+            _componentSettingsControl.SetSettings(settings);
         }
 
         public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
@@ -45,9 +45,7 @@ namespace LiveSplit.BattleForBikiniBottom.UI
             Memory.Update();
             _autosplitter.Update();
         }
-
         
-
         public override void Dispose()
         {
             _componentSettingsControl.Dispose();
